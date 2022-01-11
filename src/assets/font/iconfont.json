@@ -1,0 +1,72 @@
+{
+  "id": "2986984",
+  "name": "vue3_cms",
+  "font_family": "iconfont",
+  "css_prefix_text": "el-icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13519374",
+      "name": "delete",
+      "font_class": "delete",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "13519387",
+      "name": "edit-outline",
+      "font_class": "edit-outline",
+      "unicode": "e651",
+      "unicode_decimal": 58961
+    },
+    {
+      "icon_id": "13519559",
+      "name": "refresh",
+      "font_class": "refresh",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "13519341",
+      "name": "chat-line-round",
+      "font_class": "chat-line-round",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "13519409",
+      "name": "goods",
+      "font_class": "goods",
+      "unicode": "e657",
+      "unicode_decimal": 58967
+    },
+    {
+      "icon_id": "13519529",
+      "name": "setting",
+      "font_class": "setting",
+      "unicode": "e671",
+      "unicode_decimal": 58993
+    },
+    {
+      "icon_id": "13519574",
+      "name": "monitor",
+      "font_class": "monitor",
+      "unicode": "e680",
+      "unicode_decimal": 59008
+    },
+    {
+      "icon_id": "13519485",
+      "name": "s-fold",
+      "font_class": "s-fold",
+      "unicode": "e669",
+      "unicode_decimal": 58985
+    },
+    {
+      "icon_id": "21362201",
+      "name": "s-unfold",
+      "font_class": "s-unfold",
+      "unicode": "e687",
+      "unicode_decimal": 59015
+    }
+  ]
+}
