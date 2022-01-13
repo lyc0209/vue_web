@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <!-- <el-container class="main-content">
+    <el-container class="main-content">
       <el-aside :width="isCollapse ? '60px' : '210px'">
         <nav-menu :collapse="isCollapse"></nav-menu>
       </el-aside>
@@ -14,17 +14,17 @@
           </div>
         </el-main>
       </el-container>
-    </el-container> -->
+    </el-container>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue"
-// import NavMenu from "@/components/nav-menu"
-// import NavHeader from "@/components/nav-header"
+import NavMenu from "@/components/nav-menu"
+import NavHeader from "@/components/nav-header"
 
 export default defineComponent({
-  // components: { NavMenu, NavHeader },
+  components: { NavMenu, NavHeader },
   setup() {
     const isCollapse = ref(false)
     // 父组件接收header发射的事件

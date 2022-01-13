@@ -1,10 +1,6 @@
 import { Module } from "vuex"
 
-import {
-  accountLoginRequest,
-  requestUserInfoById,
-  requestUserMenusByRoleId
-} from "@/service/login/login"
+import { accountLoginRequest, requestUserInfo, requestUserMenus } from "@/service/login/login"
 import { IAcount } from "@/service/login/types"
 import localCahe from "@/utils/cache"
 import { mapMenusToRoutes, mapMenuToPermissions } from "@/utils/map-menus"
@@ -32,13 +28,13 @@ const loginModule: Module<ILoginState, IRootState> = {
     changeUserMenus(state, menus) {
       state.userMenus = menus
 
-      // // userMenu -> routes
-      // const routes = mapMenusToRoutes(menus)
+      // userMenu -> routes
+      const routes = mapMenusToRoutes(menus)
 
-      // // 将routes => router.main.children
-      // routes.forEach((route) => {
-      //   router.addRoute("admin", route)
-      // })
+      // 将routes => router.main.children
+      routes.forEach((route) => {
+        router.addRoute("admin", route)
+      })
 
       // // 获取按钮权限
       // const permissions = mapMenuToPermissions(menus)
@@ -57,16 +53,16 @@ const loginModule: Module<ILoginState, IRootState> = {
       // dispatch("getInitialDataAction", null, { root: true })
 
       // 请求用户信息
-      const userInfoResult = await requestUserInfoById()
+      const userInfoResult = await requestUserInfo()
       const userInfo = userInfoResult.data
       commit("changeUserInfo", userInfo)
       localCahe.setCache("userInfo", userInfo)
 
-      // // 请求用户菜单
-      // const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
-      // const userMenus = userMenusResult.data
-      // commit("changeUserMenus", userMenus)
-      // localCahe.setCache("userMenus", userMenus)
+      // 请求用户菜单
+      const userMenusResult = await requestUserMenus()
+      const userMenus = userMenusResult.data
+      commit("changeUserMenus", userMenus)
+      localCahe.setCache("userMenus", userMenus)
 
       // 跳到首页
       router.push("/admin")
