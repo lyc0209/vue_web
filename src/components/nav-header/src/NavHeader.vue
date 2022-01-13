@@ -37,8 +37,8 @@ export default defineComponent({
     const store = useStore()
     // 面包屑数据
     const breadCrumbs = computed(() => {
-      const userMenus = store.state.login.userMenus
-      return pathMapToBreadCrumbs(userMenus, useRoute().path)
+      const adminMenus = store.state.login.adminMenus
+      return pathMapToBreadCrumbs(adminMenus, useRoute().path)
     })
 
     return {

@@ -23,7 +23,11 @@
             </template>
             <!-- 遍历里面的item -->
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''" @click="handleMenuItemClick(subitem)">
+              <el-menu-item
+                v-if="subitem.type !== 0"
+                :index="subitem.id + ''"
+                @click="handleMenuItemClick(subitem)"
+              >
                 <i v-if="subitem.icon" class="iconfont" :class="subitem.icon"></i>
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
@@ -58,8 +62,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    const userMenus = computed(() => store.state.login.userMenus)
-
+    const userMenus = computed(() => store.state.login.adminMenus)
     const route = useRoute()
     const currentPath = route.path
     const menu = pathMapToMenu(userMenus.value, currentPath)

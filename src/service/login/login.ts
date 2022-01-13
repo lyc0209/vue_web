@@ -5,7 +5,8 @@ import { IDataType } from "../types"
 enum LoginApi {
   AccountLogin = "/admin/login",
   LoginUserInfo = "/admin/user",
-  UserMenus = "/role/menu/list"
+  UserMenus = "/role/menu/list",
+  AdminPermission = "/role/button/list"
 }
 
 export function accountLoginRequest(account: IAcount) {
@@ -25,5 +26,11 @@ export function requestUserInfo() {
 export function requestUserMenus() {
   return lycRequest.get<IDataType>({
     url: LoginApi.UserMenus
+  })
+}
+
+export function requestAdminPermission() {
+  return lycRequest.get<IDataType>({
+    url: LoginApi.AdminPermission
   })
 }

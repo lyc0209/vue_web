@@ -10,6 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue"
+import { useRoute } from "vue-router"
 import { IBreadCrumb } from "../types"
 
 export default defineComponent({
@@ -20,6 +21,9 @@ export default defineComponent({
     }
   },
   setup() {
+    const route = useRoute()
+    console.log(route.matched)
+
     return {}
   }
 })

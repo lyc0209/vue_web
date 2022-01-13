@@ -28,8 +28,8 @@ import { useRouter } from "vue-router"
 export default defineComponent({
   setup() {
     const store = useStore()
-    const name = computed(() => store.state.login.userInfo.nickname)
-    const avatarUrl = computed(() => store.state.login.userInfo.avatar)
+    const name = computed(() => store.state.login.adminInfo.nickname)
+    const avatarUrl = computed(() => store.state.login.adminInfo.avatar)
 
     const router = useRouter()
     const handleLogoutClick = () => {

@@ -1,7 +1,7 @@
 import lycRequest from "../index"
 
 export function getPageListData(url: string, queryInfo: any) {
-  return lycRequest.post({
+  return lycRequest.get({
     url: url,
     data: queryInfo
   })

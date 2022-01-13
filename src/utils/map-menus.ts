@@ -21,7 +21,7 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   // type === 2 -> url -> route
   const _recurseGetRoute = (menus: any[]) => {
     for (const menu of menus) {
-      if (menu.type === 2) {
+      if (menu.type === 2 || menu.type === 0) {
         const route = allRoutes.find((route) => route.path === menu.url)
         if (route) {
           routes.push(route)
@@ -37,24 +37,6 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   _recurseGetRoute(userMenus)
 
   return routes
-}
-
-export function mapMenuToPermissions(userMenus: any[]) {
-  const permissions: string[] = []
-
-  const _recurseGetPermission = (menus: any[]) => {
-    for (const menu of menus) {
-      if (menu.type === 1 || menu.type === 2) {
-        _recurseGetPermission(menu.children ?? [])
-      } else if (menu.type === 3) {
-        permissions.push(menu.permission)
-      }
-    }
-  }
-
-  _recurseGetPermission(userMenus)
-
-  return permissions
 }
 
 export function mapMenuLeafKeys(menuList: any[]) {
@@ -96,7 +78,7 @@ export function pathMapToMenu(
         breadCrumbs?.push({ name: findMenu.name, path: findMenu.url })
         return findMenu
       }
-    } else if (menu.type === 2 && menu.url === currentPath) {
+    } else if ((menu.type === 2 || menu.type === 0) && menu.url === currentPath) {
       return menu
     }
   }

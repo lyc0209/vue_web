@@ -15,8 +15,8 @@ const adminModule: Module<ISystemState, IRootState> = {
     return {
       userList: [],
       userCount: 0,
-      blogList: [],
-      blogCount: 0,
+      articleList: [],
+      articleCount: 0,
       categoryList: [],
       categoryCount: 0,
       tagList: [],
@@ -30,11 +30,11 @@ const adminModule: Module<ISystemState, IRootState> = {
     changeUserCount(state, userCount: number) {
       state.userCount = userCount
     },
-    changeBlogList(state, blogList: any[]) {
-      state.blogList = blogList
+    changeArticleList(state, articleList: any[]) {
+      state.articleList = articleList
     },
-    changeBlogCount(state, blogCount: number) {
-      state.blogCount = blogCount
+    changeArticleCount(state, articleCount: number) {
+      state.articleCount = articleCount
     },
     changeCategoryList(state, categoryList: any[]) {
       state.categoryList = categoryList
@@ -55,8 +55,8 @@ const adminModule: Module<ISystemState, IRootState> = {
         switch (pageName) {
           case "user":
             return state.userList
-          case "blog":
-            return state.blogList
+          case "article":
+            return state.articleList
           case "category":
             return state.categoryList
           case "tag":
@@ -69,8 +69,8 @@ const adminModule: Module<ISystemState, IRootState> = {
         switch (pageName) {
           case "user":
             return state.userCount
-          case "blog":
-            return state.blogCount
+          case "article":
+            return state.articleCount
           case "category":
             return state.categoryCount
           case "tag":
@@ -84,7 +84,7 @@ const adminModule: Module<ISystemState, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       // 获取pageUrl
       const pageName = payload.pageUrl
-      const pageUrl = `/${pageName}/list`
+      const pageUrl = `/admin/${pageName}/list`
 
       // 1.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
@@ -96,9 +96,9 @@ const adminModule: Module<ISystemState, IRootState> = {
           commit(`changeUserList`, list)
           commit(`changeUserCount`, totalCount)
           break
-        case "blog":
-          commit(`changeBlogList`, list)
-          commit(`changeBlogCount`, totalCount)
+        case "article":
+          commit(`changeArticleList`, list)
+          commit(`changeArticleCount`, totalCount)
           break
         case "category":
           commit(`changeCategoryList`, list)
@@ -125,8 +125,8 @@ const adminModule: Module<ISystemState, IRootState> = {
       dispatch("getPageListAction", {
         pageUrl: pageName,
         queryInfo: {
-          offset: 0,
-          size: 10
+          pageNum: 1,
+          pageSize: 10
         }
       })
     },
@@ -141,8 +141,8 @@ const adminModule: Module<ISystemState, IRootState> = {
       dispatch("getPageListAction", {
         pageUrl: pageName,
         queryInfo: {
-          offset: 0,
-          size: 10
+          pageNum: 1,
+          pageSize: 10
         }
       })
     },
@@ -157,8 +157,8 @@ const adminModule: Module<ISystemState, IRootState> = {
       dispatch("getPageListAction", {
         pageUrl: pageName,
         queryInfo: {
-          offset: 0,
-          size: 10
+          pageNum: 1,
+          pageSize: 10
         }
       })
     }
