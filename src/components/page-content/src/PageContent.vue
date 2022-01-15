@@ -55,6 +55,8 @@ import { useStore } from "@/store"
 import { usePermission } from "@/hooks/use-permission"
 import LycTable from "@/base-ui/table/index"
 
+import { ElMessageBox, ElMessage } from "element-plus"
+
 export default defineComponent({
   name: "PageContent",
   props: {
@@ -128,11 +130,27 @@ export default defineComponent({
 
     // 5. 删除操作
     const handleDeleteClick = (item: any) => {
-      console.log(item)
-      // store.dispatch("admin/deletePageDataAction", {
-      //   pageName: props.pageName === "user" ? "users" : props.pageName,
-      //   id: item.id
-      // })
+      ElMessageBox.confirm("删除操作不可逆！ 确定删除?", "Warning", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          store.dispatch("admin/deletePageDataAction", {
+            pageName: props.pageName,
+            id: item.id
+          })
+          // ElMessage({
+          //   type: "success",
+          //   message: "Delete completed"
+          // })
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "操作取消"
+          })
+        })
     }
 
     // 新建按钮点击事件

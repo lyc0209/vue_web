@@ -122,9 +122,15 @@ const adminModule: Module<IAdminState, IRootState> = {
       // 1.pageName -> /users/
       // 2.id -> /users/id
       const { pageName, id } = payload
-      const pageUrl = `/${pageName}/${id}`
+      const pageUrl = `/admin/${pageName}/${id}`
       // 调用删除的网络请求
-      await deletePageData(pageUrl)
+      const [err, result] = await to<IDataType>(deletePageData(pageUrl))
+      if (err || result?.code !== 200) {
+        ElMessage.error("删除失败")
+        return
+      }
+
+      ElMessage.success("删除成功")
 
       // 2. 重新请求最新数据
       dispatch("getPageListAction", {
