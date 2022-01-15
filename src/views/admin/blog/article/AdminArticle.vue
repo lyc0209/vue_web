@@ -40,8 +40,13 @@ export default defineComponent({
       })
     }
 
-    const handleEditData = () => {
-      console.log("click edit")
+    const handleEditData = (item: any) => {
+      router.push({
+        name: "WriteArticle",
+        query: {
+          id: item.id
+        }
+      })
     }
 
     return {

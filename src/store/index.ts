@@ -1,4 +1,5 @@
 import { createStore, Store, useStore as useVuexStore } from "vuex"
+import createPersistedState from "vuex-persistedstate"
 import { IRootState, IStoreType } from "./types"
 import login from "./login/login"
 import admin from "./admin/admin"
@@ -34,7 +35,8 @@ const store = createStore<IRootState>({
   modules: {
     login,
     admin
-  }
+  },
+  plugins: [createPersistedState({ storage: window.sessionStorage })]
 })
 
 // vuex 浏览器一刷新，数据就消失

@@ -13,7 +13,13 @@ export const articleOptionConfig: IForm = {
       field: "title",
       type: "input",
       label: "标题",
-      rules: [],
+      rules: [
+        {
+          required: true,
+          message: "标题不能为空",
+          trigger: "blur"
+        }
+      ],
       placeholder: "请输入标题"
     },
     {
@@ -26,9 +32,15 @@ export const articleOptionConfig: IForm = {
     {
       field: "indexPicture",
       type: "input",
-      label: "文章首图URL",
-      rules: [],
-      placeholder: "文章首图，用于文章展示"
+      label: "首图",
+      rules: [
+        {
+          required: true,
+          message: "首图不能为空",
+          trigger: "blur"
+        }
+      ],
+      placeholder: "文章首图URL，用于文章展示"
     },
     {
       field: "password",
@@ -44,7 +56,13 @@ export const articleOptionConfig: IForm = {
       field: "categoryId",
       type: "select",
       label: "分类",
-      rules: [],
+      rules: [
+        {
+          required: true,
+          message: "分类不能为空",
+          trigger: "change"
+        }
+      ],
       placeholder: "请选择分类",
       options: []
     },
@@ -52,7 +70,13 @@ export const articleOptionConfig: IForm = {
       field: "tagList",
       type: "select",
       label: "标签",
-      rules: [],
+      rules: [
+        {
+          required: true,
+          message: "标签不能为空",
+          trigger: "change"
+        }
+      ],
       placeholder: "请选择标签",
       options: [],
       otherOptions: {

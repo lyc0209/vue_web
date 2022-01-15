@@ -4,7 +4,7 @@
     <div class="header">
       <slot name="header"></slot>
     </div>
-    <el-form :label-width="labelWidth">
+    <el-form :label-width="labelWidth" ref="formRef" :model="formData">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
@@ -13,6 +13,7 @@
               :label="item.label"
               :rules="item.rules"
               :class="item.itemStype"
+              :prop="item.field"
             >
               <template v-if="item.type === 'input' || item.type === 'password'">
                 <!-- 这里通过props接收父组件数据，v-model="formData[`${item.field}`]"将父组件数据放到子组件修改是不应该的，不符合单向数据流 -->
@@ -62,8 +63,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch, computed } from "vue"
+import { defineComponent, PropType, ref, watch } from "vue"
 import { IFormItem } from "../types"
+
+import { ElForm } from "element-plus"
 
 export default defineComponent({
   name: "Form",
@@ -108,7 +111,6 @@ export default defineComponent({
     // })
     // 解构，生成新的对象。不违背单向数据流
     const formData = ref({ ...props.modelValue })
-
     // watch(
     //   () => props.modelValue,
     //   (newValue) => {
@@ -120,8 +122,19 @@ export default defineComponent({
       deep: true
     })
 
+    const formRef = ref<InstanceType<typeof ElForm>>()
+    const validateAction = () => {
+      let isValidated = false
+      formRef.value!.validate((valid) => {
+        isValidated = valid ?? false
+      })
+      return isValidated
+    }
+
     return {
-      formData
+      formData,
+      formRef,
+      validateAction
     }
   }
 })

@@ -1,6 +1,6 @@
 <template>
   <div class="article-option">
-    <lyc-form v-bind="articleOptionConfig" v-model="formData">
+    <lyc-form v-bind="articleOptionConfig" v-model="formData" ref="lycFormRef">
       <template #header>
         <h1 class="header">编辑文章</h1>
       </template>
@@ -18,6 +18,7 @@
 import { defineComponent, ref } from "vue"
 import { useStore } from "@/store"
 import LycForm from "@/base-ui/form"
+import { ElMessage } from "element-plus"
 
 export default defineComponent({
   name: "ArticleOption",
@@ -25,11 +26,17 @@ export default defineComponent({
     articleOptionConfig: {
       type: Object,
       required: true
+    },
+    defaultId: {
+      type: String,
+      default: "-1"
     }
   },
   components: { LycForm },
   setup(props) {
     const store = useStore()
+
+    const content = ref("")
 
     const pageInfo = ref({ currentPage: 1, pageSize: 10000 })
     const getCategoryData = (queryInfo: any = {}) => {
@@ -59,23 +66,57 @@ export default defineComponent({
     //1. formData中的属性应该动态决定
     const formItems = props.articleOptionConfig?.formItems ?? []
     let formOriginData: any = {}
-    for (const item of formItems) {
-      formOriginData[item.field] = item.default ?? ""
+    if (Number(props.defaultId) !== -1) {
+      const defaultArticle = store.state.admin.articleList.find(
+        (item) => item.id === Number(props.defaultId)
+      )
+
+      for (const item of formItems) {
+        formOriginData[item.field] = item.default ?? ""
+        formOriginData[item.field] = defaultArticle?.[item.field] ?? ""
+      }
+      content.value = defaultArticle?.content ?? ""
+    } else {
+      for (const item of formItems) {
+        formOriginData[item.field] = item.default ?? ""
+      }
     }
 
     // 父子组件尽量用ref，reactive有些问题
     const formData = ref(formOriginData)
-
+    const lycFormRef = ref<InstanceType<typeof LycForm>>()
     const handleSaveClick = () => {
-      console.log(formData.value)
+      const isFormValidated = lycFormRef.value?.validateAction()
+      if (!isFormValidated) {
+        ElMessage.error("请完成必填内容")
+        return
+      }
+      if (!content.value.length) {
+        ElMessage.error("文章内容不不能为空")
+        return
+      }
+      if (Number(props.defaultId) === -1) {
+        // 新建
+        const params = { ...formData.value, content: content.value }
+        store.dispatch("admin/createPageDataAction", {
+          pageName: "article",
+          newData: params
+        })
+      } else {
+        // 编辑
+        const params = { ...formData.value, content: content.value, id: Number(props.defaultId) }
+        store.dispatch("admin/editPageDataAction", {
+          pageName: "article",
+          editData: params
+        })
+      }
     }
-
-    const content = ref("")
 
     return {
       formData,
       handleSaveClick,
-      content
+      content,
+      lycFormRef
     }
   }
 })

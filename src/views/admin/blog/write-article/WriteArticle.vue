@@ -1,12 +1,16 @@
 <template>
   <div class="write-artical">
-    <article-option :articleOptionConfig="articleOptionConfigRef"></article-option>
+    <article-option
+      :articleOptionConfig="articleOptionConfigRef"
+      :defaultId="defaultId"
+    ></article-option>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from "vue"
 import { useStore } from "@/store"
+import { useRoute } from "vue-router"
 import ArticleOption from "@/components/article-option"
 import { articleOptionConfig } from "./config/option.config"
 
@@ -27,8 +31,12 @@ export default defineComponent({
       return articleOptionConfig
     })
 
+    const router = useRoute()
+    const defaultId = router.query.id
+
     return {
-      articleOptionConfigRef
+      articleOptionConfigRef,
+      defaultId
     }
   }
 })

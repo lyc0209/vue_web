@@ -23,7 +23,7 @@ export function createPageData(url: string, newData: any) {
 }
 
 export function editPageData(url: string, editData: any) {
-  return lycRequest.patch({
+  return lycRequest.put({
     url: url,
     data: editData
   })

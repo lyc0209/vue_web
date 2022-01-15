@@ -1,6 +1,10 @@
 import { IRootState } from "@/store/types"
 import { Module } from "vuex"
 import { IAdminState } from "./types"
+import { IDataType } from "@/service/types"
+import to from "await-to-js"
+
+import { ElMessage } from "element-plus"
 
 import {
   getPageListData,
@@ -8,6 +12,7 @@ import {
   createPageData,
   editPageData
 } from "@/service/admin/admin"
+import router from "@/router"
 
 const adminModule: Module<IAdminState, IRootState> = {
   namespaced: true,
@@ -133,9 +138,16 @@ const adminModule: Module<IAdminState, IRootState> = {
 
     async createPageDataAction({ dispatch }, payload: any) {
       const { pageName, newData } = payload
-      const pageUrl = `/${pageName}`
+      const pageUrl = `/admin/${pageName}`
       // 创建数据请求
-      await createPageData(pageUrl, newData)
+      const [err, result] = await to<IDataType>(createPageData(pageUrl, newData))
+      if (err || result?.code !== 200) {
+        ElMessage.error("创建失败")
+        return
+      }
+
+      ElMessage.success("创建成功")
+      router.go(-1)
 
       // 2. 重新请求最新数据
       dispatch("getPageListAction", {
@@ -148,10 +160,18 @@ const adminModule: Module<IAdminState, IRootState> = {
     },
 
     async editPageDataAction({ dispatch }, payload: any) {
-      const { pageName, editData, id } = payload
-      const pageUrl = `/${pageName}/${id}`
+      const { pageName, editData } = payload
+      const pageUrl = `/admin/${pageName}`
       // 创建数据请求
-      await editPageData(pageUrl, editData)
+      //await editPageData(pageUrl, editData)
+      const [err, result] = await to<IDataType>(editPageData(pageUrl, editData))
+      if (err || result?.code !== 200) {
+        ElMessage.error("更新失败")
+        return
+      }
+
+      ElMessage.success("更新成功")
+      router.go(-1)
 
       // 2. 重新请求最新数据
       dispatch("getPageListAction", {
