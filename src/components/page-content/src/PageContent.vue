@@ -20,7 +20,7 @@
         <span>{{ $filters.formatTime(scope.row.createTime) }}</span>
       </template>
       <template #updateTime="scope">
-        <span>{{ $filters.formatTime(scope.row.createTime) }}</span>
+        <span>{{ $filters.formatTime(scope.row.updateTime) }}</span>
       </template>
       <template #handler="scope">
         <div class="handle-btns">
