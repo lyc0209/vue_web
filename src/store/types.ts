@@ -1,4 +1,5 @@
 import { ILoginState } from "./login/types"
+import { IAdminState } from "./admin/types"
 
 export interface IRootState {
   name: string
@@ -7,6 +8,7 @@ export interface IRootState {
 }
 export interface IRootWithModule {
   login: ILoginState
+  admin: IAdminState
 }
 
 // 交叉类型

@@ -1,4 +1,4 @@
-export interface ISystemState {
+export interface IAdminState {
   userList: any[]
   userCount: number
   articleList: any[]

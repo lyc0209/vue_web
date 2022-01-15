@@ -33,7 +33,7 @@ export default defineComponent({
     const formItems = props.searchFormConfig?.formItems ?? []
     let formOriginData: any = {}
     for (const item of formItems) {
-      formOriginData[item.field] = ""
+      formOriginData[item.field] = item.default ?? ""
     }
 
     // 父子组件尽量用ref，reactive有些问题

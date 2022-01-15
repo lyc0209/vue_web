@@ -21,6 +21,7 @@
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
                   v-model="formData[`${item.field}`]"
+                  v-bind="item.otherOptions"
                 ></el-input>
               </template>
               <template v-else-if="item.type === 'select'">
@@ -33,6 +34,7 @@
                   <el-option
                     v-for="option in item.options"
                     :key="option.value"
+                    :label="option.title"
                     :value="option.value"
                     >{{ option.title }}
                   </el-option>
@@ -44,6 +46,9 @@
                   v-bind="item.otherOptions"
                   v-model="formData[`${item.field}`]"
                 ></el-date-picker>
+              </template>
+              <template v-else-if="item.type === 'switch'">
+                <el-switch v-model="formData[`${item.field}`]" />
               </template>
             </el-form-item>
           </el-col>

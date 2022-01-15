@@ -1,6 +1,6 @@
 import { IRootState } from "@/store/types"
 import { Module } from "vuex"
-import { ISystemState } from "./types"
+import { IAdminState } from "./types"
 
 import {
   getPageListData,
@@ -9,7 +9,7 @@ import {
   editPageData
 } from "@/service/admin/admin"
 
-const adminModule: Module<ISystemState, IRootState> = {
+const adminModule: Module<IAdminState, IRootState> = {
   namespaced: true,
   state() {
     return {
@@ -106,7 +106,7 @@ const adminModule: Module<ISystemState, IRootState> = {
           break
         case "tag":
           commit(`changeTagList`, list)
-          commit(`changeTagount`, totalCount)
+          commit(`changeTagCount`, totalCount)
           break
       }
     },

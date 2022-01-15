@@ -1,9 +1,10 @@
-type IFormType = "input" | "password" | "select" | "datepicker"
+type IFormType = "input" | "password" | "select" | "datepicker" | "switch"
 
 export interface IFormItem {
   field: string
   type: IFormType // 表单类型
   label: string
+  default?: any //默认值
   rules?: any[]
   placeholder?: any
   options?: any[] // select选项
