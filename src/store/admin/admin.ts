@@ -12,7 +12,6 @@ import {
   createPageData,
   editPageData
 } from "@/service/admin/admin"
-import router from "@/router"
 
 const adminModule: Module<IAdminState, IRootState> = {
   namespaced: true,
@@ -102,6 +101,10 @@ const adminModule: Module<IAdminState, IRootState> = {
           commit(`changeUserCount`, totalCount)
           break
         case "article":
+          for (const item of list) {
+            item["categoryName"] = item.category.name
+            item["categoryId"] = item.category.id
+          }
           commit(`changeArticleList`, list)
           commit(`changeArticleCount`, totalCount)
           break
@@ -126,7 +129,7 @@ const adminModule: Module<IAdminState, IRootState> = {
       // 调用删除的网络请求
       const [err, result] = await to<IDataType>(deletePageData(pageUrl))
       if (err || result?.code !== 200) {
-        ElMessage.error("删除失败")
+        ElMessage.error(result?.msg ?? "删除失败")
         return
       }
 
@@ -149,11 +152,10 @@ const adminModule: Module<IAdminState, IRootState> = {
       const [err, result] = await to<IDataType>(createPageData(pageUrl, newData))
       if (err || result?.code !== 200) {
         ElMessage.error("创建失败")
-        return
+        return Promise.reject(false)
       }
 
       ElMessage.success("创建成功")
-      router.go(-1)
 
       // 2. 重新请求最新数据
       dispatch("getPageListAction", {
@@ -163,6 +165,8 @@ const adminModule: Module<IAdminState, IRootState> = {
           pageSize: 10
         }
       })
+
+      return Promise.resolve(true)
     },
 
     async editPageDataAction({ dispatch }, payload: any) {
@@ -173,11 +177,10 @@ const adminModule: Module<IAdminState, IRootState> = {
       const [err, result] = await to<IDataType>(editPageData(pageUrl, editData))
       if (err || result?.code !== 200) {
         ElMessage.error("更新失败")
-        return
+        return Promise.reject(false)
       }
 
       ElMessage.success("更新成功")
-      router.go(-1)
 
       // 2. 重新请求最新数据
       dispatch("getPageListAction", {
@@ -187,6 +190,7 @@ const adminModule: Module<IAdminState, IRootState> = {
           pageSize: 10
         }
       })
+      return Promise.resolve(true)
     }
   }
 }

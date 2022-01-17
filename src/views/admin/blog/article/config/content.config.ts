@@ -7,7 +7,7 @@ const propList = [
     minWidth: "100"
   },
   {
-    prop: "category",
+    prop: "categoryName",
     label: "分类",
     minWidth: "100"
   },

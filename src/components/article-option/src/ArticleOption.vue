@@ -19,6 +19,7 @@ import { defineComponent, ref } from "vue"
 import { useStore } from "@/store"
 import LycForm from "@/base-ui/form"
 import { ElMessage } from "element-plus"
+import router from "@/router"
 
 export default defineComponent({
   name: "ArticleOption",
@@ -98,17 +99,25 @@ export default defineComponent({
       if (Number(props.defaultId) === -1) {
         // 新建
         const params = { ...formData.value, content: content.value }
-        store.dispatch("admin/createPageDataAction", {
-          pageName: "article",
-          newData: params
-        })
+        store
+          .dispatch("admin/createPageDataAction", {
+            pageName: "article",
+            newData: params
+          })
+          .then(() => {
+            router.go(-1)
+          })
       } else {
         // 编辑
         const params = { ...formData.value, content: content.value, id: Number(props.defaultId) }
-        store.dispatch("admin/editPageDataAction", {
-          pageName: "article",
-          editData: params
-        })
+        store
+          .dispatch("admin/editPageDataAction", {
+            pageName: "article",
+            editData: params
+          })
+          .then(() => {
+            router.go(-1)
+          })
       }
     }
 

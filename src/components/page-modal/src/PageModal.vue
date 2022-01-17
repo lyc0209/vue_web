@@ -61,15 +61,14 @@ export default defineComponent({
       dialogVisible.value = false
       if (Object.keys(props.defaultInfo).length) {
         // 编辑
-        store.dispatch("system/editPageDataAction", {
-          pageName: props.pageName === "user" ? "users" : props.pageName,
-          editData: { ...formData.value, ...props.otherInfo },
-          id: props.defaultInfo.id
+        store.dispatch("admin/editPageDataAction", {
+          pageName: props.pageName,
+          editData: { ...formData.value, ...props.otherInfo, id: props.defaultInfo.id }
         })
       } else {
         // 新建
-        store.dispatch("system/createPageDataAction", {
-          pageName: props.pageName === "user" ? "users" : props.pageName,
+        store.dispatch("admin/createPageDataAction", {
+          pageName: props.pageName,
           newData: { ...formData.value, ...props.otherInfo }
         })
       }
