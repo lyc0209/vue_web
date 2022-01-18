@@ -3,7 +3,7 @@ import utc from "dayjs/plugin/utc"
 
 dayjs.extend(utc)
 
-const DATE_TIME_FORMAT_DEFAULT = "YYYY-MM-DD HH:mm:ss"
+export const DATE_TIME_FORMAT_DEFAULT = "YYYY-MM-DD HH:mm:ss"
 
 /**
  * utc时间格式化

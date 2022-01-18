@@ -51,6 +51,9 @@
               <template v-else-if="item.type === 'switch'">
                 <el-switch v-model="formData[`${item.field}`]" />
               </template>
+              <template v-else-if="item.type === 'color-picker'">
+                <el-color-picker v-model="formData[`${item.field}`]" />
+              </template>
             </el-form-item>
           </el-col>
         </template>
@@ -117,6 +120,7 @@ export default defineComponent({
     //     formData.value = { ...newValue }
     //   }
     // )
+    console.log(props.modelValue)
 
     watch(formData, (newValue) => emit("update:modelValue", newValue), {
       deep: true

@@ -1,25 +1,31 @@
 <template>
-  <div class="main">Main</div>
+  <div class="main">
+    <el-container>
+      <el-header><blog-header /></el-header>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+      <el-footer><blog-footer /></el-footer>
+    </el-container>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue"
-// import NavMenu from "@/components/nav-menu"
-// import NavHeader from "@/components/nav-header"
+import { defineComponent } from "vue"
+
+import { useStore } from "@/store"
+
+import BlogHeader from "./cpns/BlogHeader.vue"
+import BlogFooter from "./cpns/BlogFooter.vue"
 
 export default defineComponent({
-  // components: { NavMenu, NavHeader },
+  name: "Main",
+  components: { BlogHeader, BlogFooter },
   setup() {
-    const isCollapse = ref(false)
-    // 父组件接收header发射的事件
-    const handleFoldChange = (isFold: boolean) => {
-      isCollapse.value = isFold
-    }
+    const store = useStore()
+    store.dispatch("main/getIndexInfoAction")
 
-    return {
-      isCollapse,
-      handleFoldChange
-    }
+    return {}
   }
 })
 </script>
@@ -31,6 +37,7 @@ export default defineComponent({
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 
 .main-content,
@@ -56,27 +63,16 @@ export default defineComponent({
 
 .el-header {
   height: 48px !important;
+  padding: 0;
 }
 
-.el-aside {
-  overflow-x: hidden;
-  overflow-y: auto;
-  line-height: 200px;
-  text-align: left;
-  cursor: pointer;
-  background-color: #001529;
-  transition: width 0.3s linear;
-  scrollbar-width: none; /* firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
+.el-footer {
+  background-color: #f0f2f5;
 }
 
 .el-main {
-  color: #333;
+  // color: #333;
   text-align: center;
-  background-color: #f0f2f5;
+  // background-color: #f0f2f5;
 }
 </style>

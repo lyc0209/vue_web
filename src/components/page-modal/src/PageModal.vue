@@ -45,12 +45,19 @@ export default defineComponent({
     const dialogVisible = ref(false)
     const formData = ref<any>({})
 
+    for (const item of props.modalConfig.formItems) {
+      formData.value[`${item.field}`] = item?.default ?? undefined
+    }
+    console.log(formData)
+
     // 监听来自编辑按钮传来的信息
     watch(
       () => props.defaultInfo,
       (newValue) => {
         for (const item of props.modalConfig.formItems) {
-          formData.value[`${item.field}`] = newValue[`${item.field}`]
+          if (newValue[`${item.field}`]) {
+            formData.value[`${item.field}`] = newValue[`${item.field}`]
+          }
         }
       }
     )

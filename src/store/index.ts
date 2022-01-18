@@ -3,6 +3,7 @@ import createPersistedState from "vuex-persistedstate"
 import { IRootState, IStoreType } from "./types"
 import login from "./login/login"
 import admin from "./admin/admin"
+import main from "./main/main"
 
 import { getPageListData } from "@/service/admin/admin"
 
@@ -34,9 +35,10 @@ const store = createStore<IRootState>({
   },
   modules: {
     login,
-    admin
-  },
-  plugins: [createPersistedState({ storage: window.sessionStorage })]
+    admin,
+    main
+  }
+  // plugins: [createPersistedState({ storage: window.sessionStorage })]
 })
 
 // vuex 浏览器一刷新，数据就消失
