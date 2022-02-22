@@ -5,7 +5,7 @@
       <el-main>
         <router-view></router-view>
       </el-main>
-      <el-footer><blog-footer /></el-footer>
+      <el-footer style="padding: 0"><blog-footer /></el-footer>
     </el-container>
   </div>
 </template>

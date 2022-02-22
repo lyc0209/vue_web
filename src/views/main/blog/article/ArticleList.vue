@@ -3,7 +3,7 @@
     <div class="article-card" v-for="article in articleList" :key="article.id">
       <el-image class="article-img" :src="article.indexPicture" />
       <div class="article-text">
-        <div class="article-title">{{ article.title }}</div>
+        <div class="article-title" @click="handleTitleClick(article.id)">{{ article.title }}</div>
         <div class="article-info">
           <span>{{ article.author.nickname }}</span>
           <span class="separator">|</span>
@@ -20,11 +20,13 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from "vue"
 import { useStore } from "@/store"
+import { useRouter } from "vue-router"
 
 export default defineComponent({
   name: "ArticleList",
   setup() {
     const store = useStore()
+    const router = useRouter()
     const pageInfo = ref({ currentPage: 1, pageSize: 10 })
     watch(pageInfo, () => getPageData())
 
@@ -39,8 +41,18 @@ export default defineComponent({
 
     const articleList = computed(() => store.getters[`main/getArticleList`])
 
+    const handleTitleClick = (id: number) => {
+      router.push({
+        path: "/article",
+        query: {
+          id: id
+        }
+      })
+    }
+
     return {
-      articleList
+      articleList,
+      handleTitleClick
     }
   }
 })
@@ -60,10 +72,6 @@ export default defineComponent({
   margin: 10px 0;
   padding: 40px 20px;
 
-  .article-card:hover {
-    box-shadow: 0 3px 8px 6px rgba(7, 17, 27, 0.85);
-  }
-
   .article-img {
     width: 160px;
     height: 120px;
@@ -81,9 +89,13 @@ export default defineComponent({
       margin-bottom: 5px;
       cursor: pointer;
     }
+    .article-title:hover {
+      color: #ed556a;
+    }
 
     .article-info {
       font-size: 10px;
+      color: #858585;
     }
 
     .separator {
@@ -102,5 +114,9 @@ export default defineComponent({
       -webkit-box-orient: vertical;
     }
   }
+}
+
+.article-card:hover {
+  box-shadow: 0 3px 8px 6px rgba(7, 17, 27, 0.15);
 }
 </style>

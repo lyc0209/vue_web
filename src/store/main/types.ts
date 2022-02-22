@@ -3,4 +3,5 @@ export interface IMainState {
   statisticInfo: any
   articleList: any[]
   articleCount: number
+  articleDetail: any
 }
