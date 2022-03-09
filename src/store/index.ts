@@ -37,8 +37,9 @@ const store = createStore<IRootState>({
     login,
     admin,
     main
-  }
-  // plugins: [createPersistedState({ storage: window.sessionStorage })]
+  },
+  // 刷新后需要将vuex的数据从sessionStorage中恢复，否则依赖vuex的地方会无数据
+  plugins: [createPersistedState({ storage: window.sessionStorage })]
 })
 
 // vuex 浏览器一刷新，数据就消失
