@@ -10,11 +10,7 @@
         </el-header>
         <el-main class="page-content">
           <div class="page-info">
-            <router-view v-slot="{ Component }">
-              <keep-alive>
-                <component :is="Component"></component>
-              </keep-alive>
-            </router-view>
+            <router-view />
           </div>
         </el-main>
       </el-container>
