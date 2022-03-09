@@ -5,7 +5,7 @@
       <el-main>
         <router-view></router-view>
       </el-main>
-      <el-footer style="padding: 0"><blog-footer /></el-footer>
+      <el-footer><blog-footer /></el-footer>
     </el-container>
   </div>
 </template>
@@ -32,25 +32,11 @@ export default defineComponent({
 
 <style scoped lang="less">
 .main {
-  position: fixed;
-  top: 0;
-  left: 0;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: auto;
-}
-
-.main-content,
-.page {
-  height: 100%;
-}
-
-.page-content {
-  height: calc(100% - 48px);
-
-  .page-info {
-    background-color: #fff;
-  }
 }
 
 .el-header,
@@ -59,20 +45,20 @@ export default defineComponent({
   color: #333;
   text-align: center;
   align-items: center;
+  padding: 0;
 }
 
 .el-header {
   height: 48px !important;
-  padding: 0;
 }
 
 .el-footer {
   background-color: #f0f2f5;
+  height: 100px !important;
 }
 
 .el-main {
-  // color: #333;
   text-align: center;
-  // background-color: #f0f2f5;
+  flex: 1;
 }
 </style>

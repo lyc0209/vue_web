@@ -34,9 +34,8 @@ export default defineComponent({
   flex-direction: column;
   font-size: 12px;
   color: #eee;
-  position: relative;
+  height: 100px;
 
-  padding: 30px 0;
   background-color: #24587a;
 
   .icp-info {
