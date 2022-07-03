@@ -3,7 +3,7 @@ import utc from "dayjs/plugin/utc"
 
 dayjs.extend(utc)
 
-const DATE_TIME_FORMAT_DEFAULT = "YYYY-MM-DD HH:mm:ss"
+export const DATE_TIME_FORMAT_DEFAULT = "YYYY-MM-DD HH:mm:ss"
 
 /**
  * utc时间格式化
@@ -23,4 +23,10 @@ export function utcToString(utc: string, format: string = DATE_TIME_FORMAT_DEFAU
  */
 export function timestampToString(timestamp: number, format: string = DATE_TIME_FORMAT_DEFAULT) {
   return dayjs(timestamp.toString().length === 10 ? timestamp * 1000 : timestamp).format(format)
+}
+
+export function getDateDiffText(timestamp: number) {
+  const date1 = dayjs()
+  const date2 = dayjs(timestamp)
+  return date1.diff(date2, "d") + "天"
 }

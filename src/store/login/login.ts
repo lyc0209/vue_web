@@ -2,12 +2,13 @@ import { Module } from "vuex"
 
 import {
   accountLoginRequest,
-  requestUserInfoById,
-  requestUserMenusByRoleId
+  requestUserInfo,
+  requestUserMenus,
+  requestAdminPermission
 } from "@/service/login/login"
 import { IAcount } from "@/service/login/types"
 import localCahe from "@/utils/cache"
-import { mapMenusToRoutes, mapMenuToPermissions } from "@/utils/map-menus"
+import { mapMenusToRoutes } from "@/utils/map-menus"
 import { ILoginState } from "./types"
 import { IRootState } from "../types"
 import router from "@/router"
@@ -17,8 +18,8 @@ const loginModule: Module<ILoginState, IRootState> = {
   state() {
     return {
       token: "",
-      userInfo: {},
-      userMenus: [],
+      adminInfo: {},
+      adminMenus: [],
       permissions: []
     }
   },
@@ -26,23 +27,22 @@ const loginModule: Module<ILoginState, IRootState> = {
     changeToken(state, token: string) {
       state.token = token
     },
-    changeUserInfo(state, userInfo: string) {
-      state.userInfo = userInfo
+    changeAdminInfo(state, userInfo: string) {
+      state.adminInfo = userInfo
     },
-    changeUserMenus(state, menus) {
-      state.userMenus = menus
+    changeAdminMenus(state, menus) {
+      state.adminMenus = menus
 
-      // // userMenu -> routes
-      // const routes = mapMenusToRoutes(menus)
+      // userMenu -> routes
+      const routes = mapMenusToRoutes(menus)
 
-      // // 将routes => router.main.children
-      // routes.forEach((route) => {
-      //   router.addRoute("admin", route)
-      // })
-
-      // // 获取按钮权限
-      // const permissions = mapMenuToPermissions(menus)
-      // state.permissions = permissions
+      // 将routes => router.main.children
+      routes.forEach((route) => {
+        router.addRoute("admin", route)
+      })
+    },
+    changeAdminPermissions(state, permissions) {
+      state.permissions = permissions
     }
   },
   actions: {
@@ -57,16 +57,21 @@ const loginModule: Module<ILoginState, IRootState> = {
       // dispatch("getInitialDataAction", null, { root: true })
 
       // 请求用户信息
-      const userInfoResult = await requestUserInfoById()
+      const userInfoResult = await requestUserInfo()
       const userInfo = userInfoResult.data
-      commit("changeUserInfo", userInfo)
-      localCahe.setCache("userInfo", userInfo)
+      commit("changeAdminInfo", userInfo)
+      localCahe.setCache("adminInfo", userInfo)
 
-      // // 请求用户菜单
-      // const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
-      // const userMenus = userMenusResult.data
-      // commit("changeUserMenus", userMenus)
-      // localCahe.setCache("userMenus", userMenus)
+      // 请求用户菜单
+      const userMenusResult = await requestUserMenus()
+      const userMenus = userMenusResult.data
+      commit("changeAdminMenus", userMenus)
+      localCahe.setCache("adminMenus", userMenus)
+
+      const adminPermissionResult = await requestAdminPermission()
+      const adminPermissions = adminPermissionResult.data
+      commit("changeAdminPermissions", adminPermissions)
+      localCahe.setCache("adminPermissions", adminPermissions)
 
       // 跳到首页
       router.push("/admin")
@@ -74,20 +79,24 @@ const loginModule: Module<ILoginState, IRootState> = {
     // phoneLoginAction({ commit }, payload: any) {
     //   console.log("执行phoneLoginAction", payload)
     // }
-    loadLocalLogin({ commit, dispatch }) {
+    loadLocalLogin({ commit }) {
       const token = localCahe.getCache("token")
       if (token) {
         commit("changeToken", token)
         // 加载本地token时也请求role、department
         // dispatch("getInitialDataAction", null, { root: true })
       }
-      const userInfo = localCahe.getCache("userInfo")
+      const userInfo = localCahe.getCache("adminInfo")
       if (userInfo) {
-        commit("changeUserInfo", userInfo)
+        commit("changeAdminInfo", userInfo)
       }
-      const userMenus = localCahe.getCache("userMenus")
-      if (token) {
-        commit("changeUserMenus", userMenus)
+      const userMenus = localCahe.getCache("adminMenus")
+      if (userMenus) {
+        commit("changeAdminMenus", userMenus)
+      }
+      const adminPermissons = localCahe.getCache("adminPermissions")
+      if (adminPermissons) {
+        commit("changeAdminPermissions", adminPermissons)
       }
     }
   },

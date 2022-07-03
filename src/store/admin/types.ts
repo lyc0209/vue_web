@@ -1,8 +1,8 @@
-export interface ISystemState {
+export interface IAdminState {
   userList: any[]
   userCount: number
-  blogList: any[]
-  blogCount: number
+  articleList: any[]
+  articleCount: number
   categoryList: any[]
   categoryCount: number
   tagList: any[]

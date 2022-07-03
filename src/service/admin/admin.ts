@@ -1,7 +1,7 @@
 import lycRequest from "../index"
 
 export function getPageListData(url: string, queryInfo: any) {
-  return lycRequest.post({
+  return lycRequest.get({
     url: url,
     data: queryInfo
   })
@@ -23,7 +23,7 @@ export function createPageData(url: string, newData: any) {
 }
 
 export function editPageData(url: string, editData: any) {
-  return lycRequest.patch({
+  return lycRequest.put({
     url: url,
     data: editData
   })

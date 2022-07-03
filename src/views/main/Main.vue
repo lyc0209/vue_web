@@ -1,49 +1,44 @@
 <template>
-  <div class="main">Main</div>
+  <div class="main">
+    <el-container>
+      <el-header><blog-header /></el-header>
+      <el-main>
+        <left-panel></left-panel>
+        <router-view></router-view>
+      </el-main>
+      <el-footer><blog-footer /></el-footer>
+    </el-container>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue"
-// import NavMenu from "@/components/nav-menu"
-// import NavHeader from "@/components/nav-header"
+import { defineComponent } from "vue"
+
+import { useStore } from "@/store"
+
+import BlogHeader from "./cpns/BlogHeader.vue"
+import BlogFooter from "./cpns/BlogFooter.vue"
+import LeftPanel from "@/views/main/panel/LeftPanel.vue"
 
 export default defineComponent({
-  // components: { NavMenu, NavHeader },
+  name: "Main",
+  components: { LeftPanel, BlogHeader, BlogFooter },
   setup() {
-    const isCollapse = ref(false)
-    // 父组件接收header发射的事件
-    const handleFoldChange = (isFold: boolean) => {
-      isCollapse.value = isFold
-    }
+    const store = useStore()
+    store.dispatch("main/getIndexInfoAction")
 
-    return {
-      isCollapse,
-      handleFoldChange
-    }
+    return {}
   }
 })
 </script>
 
 <style scoped lang="less">
 .main {
-  position: fixed;
-  top: 0;
-  left: 0;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-}
-
-.main-content,
-.page {
-  height: 100%;
-}
-
-.page-content {
-  height: calc(100% - 48px);
-
-  .page-info {
-    background-color: #fff;
-  }
+  overflow: auto;
 }
 
 .el-header,
@@ -52,31 +47,24 @@ export default defineComponent({
   color: #333;
   text-align: center;
   align-items: center;
+  padding: 0;
 }
 
 .el-header {
   height: 48px !important;
 }
 
-.el-aside {
-  overflow-x: hidden;
-  overflow-y: auto;
-  line-height: 200px;
-  text-align: left;
-  cursor: pointer;
-  background-color: #001529;
-  transition: width 0.3s linear;
-  scrollbar-width: none; /* firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
+.el-footer {
+  background-color: #f0f2f5;
+  height: 100px !important;
 }
 
 .el-main {
-  color: #333;
   text-align: center;
-  background-color: #f0f2f5;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  //max-width: 1500px;
 }
 </style>

@@ -115,6 +115,10 @@ class LycRequest {
   patch<T = IDataType>(config: LycRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: "PATCH" })
   }
+
+  put<T = IDataType>(config: LycRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: "PUT" })
+  }
 }
 
 export default LycRequest

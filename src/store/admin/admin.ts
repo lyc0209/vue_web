@@ -1,6 +1,10 @@
 import { IRootState } from "@/store/types"
 import { Module } from "vuex"
-import { ISystemState } from "./types"
+import { IAdminState } from "./types"
+import { IDataType } from "@/service/types"
+import to from "await-to-js"
+
+import { ElMessage } from "element-plus"
 
 import {
   getPageListData,
@@ -9,14 +13,14 @@ import {
   editPageData
 } from "@/service/admin/admin"
 
-const adminModule: Module<ISystemState, IRootState> = {
+const adminModule: Module<IAdminState, IRootState> = {
   namespaced: true,
   state() {
     return {
       userList: [],
       userCount: 0,
-      blogList: [],
-      blogCount: 0,
+      articleList: [],
+      articleCount: 0,
       categoryList: [],
       categoryCount: 0,
       tagList: [],
@@ -30,11 +34,11 @@ const adminModule: Module<ISystemState, IRootState> = {
     changeUserCount(state, userCount: number) {
       state.userCount = userCount
     },
-    changeBlogList(state, blogList: any[]) {
-      state.blogList = blogList
+    changeArticleList(state, articleList: any[]) {
+      state.articleList = articleList
     },
-    changeBlogCount(state, blogCount: number) {
-      state.blogCount = blogCount
+    changeArticleCount(state, articleCount: number) {
+      state.articleCount = articleCount
     },
     changeCategoryList(state, categoryList: any[]) {
       state.categoryList = categoryList
@@ -55,8 +59,8 @@ const adminModule: Module<ISystemState, IRootState> = {
         switch (pageName) {
           case "user":
             return state.userList
-          case "blog":
-            return state.blogList
+          case "article":
+            return state.articleList
           case "category":
             return state.categoryList
           case "tag":
@@ -69,8 +73,8 @@ const adminModule: Module<ISystemState, IRootState> = {
         switch (pageName) {
           case "user":
             return state.userCount
-          case "blog":
-            return state.blogCount
+          case "article":
+            return state.articleCount
           case "category":
             return state.categoryCount
           case "tag":
@@ -84,7 +88,7 @@ const adminModule: Module<ISystemState, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       // 获取pageUrl
       const pageName = payload.pageUrl
-      const pageUrl = `/${pageName}/list`
+      const pageUrl = `/admin/${pageName}/list`
 
       // 1.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
@@ -96,9 +100,13 @@ const adminModule: Module<ISystemState, IRootState> = {
           commit(`changeUserList`, list)
           commit(`changeUserCount`, totalCount)
           break
-        case "blog":
-          commit(`changeBlogList`, list)
-          commit(`changeBlogCount`, totalCount)
+        case "article":
+          for (const item of list) {
+            item["categoryName"] = item.category.name
+            item["categoryId"] = item.category.id
+          }
+          commit(`changeArticleList`, list)
+          commit(`changeArticleCount`, totalCount)
           break
         case "category":
           commit(`changeCategoryList`, list)
@@ -106,7 +114,7 @@ const adminModule: Module<ISystemState, IRootState> = {
           break
         case "tag":
           commit(`changeTagList`, list)
-          commit(`changeTagount`, totalCount)
+          commit(`changeTagCount`, totalCount)
           break
       }
     },
@@ -117,50 +125,72 @@ const adminModule: Module<ISystemState, IRootState> = {
       // 1.pageName -> /users/
       // 2.id -> /users/id
       const { pageName, id } = payload
-      const pageUrl = `/${pageName}/${id}`
+      const pageUrl = `/admin/${pageName}/${id}`
       // 调用删除的网络请求
-      await deletePageData(pageUrl)
+      const [err, result] = await to<IDataType>(deletePageData(pageUrl))
+      if (err || result?.code !== 200) {
+        ElMessage.error(result?.msg ?? "删除失败")
+        return
+      }
+
+      ElMessage.success("删除成功")
 
       // 2. 重新请求最新数据
       dispatch("getPageListAction", {
         pageUrl: pageName,
         queryInfo: {
-          offset: 0,
-          size: 10
+          pageNum: 1,
+          pageSize: 10
         }
       })
     },
 
     async createPageDataAction({ dispatch }, payload: any) {
       const { pageName, newData } = payload
-      const pageUrl = `/${pageName}`
+      const pageUrl = `/admin/${pageName}`
       // 创建数据请求
-      await createPageData(pageUrl, newData)
+      const [err, result] = await to<IDataType>(createPageData(pageUrl, newData))
+      if (err || result?.code !== 200) {
+        ElMessage.error("创建失败")
+        return Promise.reject(false)
+      }
+
+      ElMessage.success("创建成功")
 
       // 2. 重新请求最新数据
       dispatch("getPageListAction", {
         pageUrl: pageName,
         queryInfo: {
-          offset: 0,
-          size: 10
+          pageNum: 1,
+          pageSize: 10
         }
       })
+
+      return Promise.resolve(true)
     },
 
     async editPageDataAction({ dispatch }, payload: any) {
-      const { pageName, editData, id } = payload
-      const pageUrl = `/${pageName}/${id}`
+      const { pageName, editData } = payload
+      const pageUrl = `/admin/${pageName}`
       // 创建数据请求
-      await editPageData(pageUrl, editData)
+      //await editPageData(pageUrl, editData)
+      const [err, result] = await to<IDataType>(editPageData(pageUrl, editData))
+      if (err || result?.code !== 200) {
+        ElMessage.error("更新失败")
+        return Promise.reject(false)
+      }
+
+      ElMessage.success("更新成功")
 
       // 2. 重新请求最新数据
       dispatch("getPageListAction", {
         pageUrl: pageName,
         queryInfo: {
-          offset: 0,
-          size: 10
+          pageNum: 1,
+          pageSize: 10
         }
       })
+      return Promise.resolve(true)
     }
   }
 }

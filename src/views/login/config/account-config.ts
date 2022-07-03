@@ -1,6 +1,6 @@
 // 校验规则, 规则数组，可以存在多个
 export const rules = {
-  name: [
+  username: [
     {
       required: true,
       message: "用户名不能为空",
