@@ -3,6 +3,7 @@
     <el-container>
       <el-header><blog-header /></el-header>
       <el-main>
+        <left-panel></left-panel>
         <router-view></router-view>
       </el-main>
       <el-footer><blog-footer /></el-footer>
@@ -17,10 +18,11 @@ import { useStore } from "@/store"
 
 import BlogHeader from "./cpns/BlogHeader.vue"
 import BlogFooter from "./cpns/BlogFooter.vue"
+import LeftPanel from "@/views/main/panel/LeftPanel.vue"
 
 export default defineComponent({
   name: "Main",
-  components: { BlogHeader, BlogFooter },
+  components: { LeftPanel, BlogHeader, BlogFooter },
   setup() {
     const store = useStore()
     store.dispatch("main/getIndexInfoAction")
@@ -60,5 +62,9 @@ export default defineComponent({
 .el-main {
   text-align: center;
   flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  //max-width: 1500px;
 }
 </style>

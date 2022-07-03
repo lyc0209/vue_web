@@ -46,10 +46,10 @@ export default defineComponent({
 .article-detail {
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 1000px;
 
   .article-mavon-editor {
-    width: 60%;
+    width: 100%;
   }
 }
 </style>

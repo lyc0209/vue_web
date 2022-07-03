@@ -68,7 +68,7 @@ export default defineComponent({
   display: flex;
   box-shadow: 0 3px 8px 6px rgba(7, 17, 27, 0.06);
   border-radius: 2px;
-  width: 600px;
+  width: 800px;
   margin: 10px 0;
   padding: 40px 20px;
 

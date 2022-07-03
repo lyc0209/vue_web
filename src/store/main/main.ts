@@ -73,6 +73,12 @@ const mainModule: Module<IMainState, IRootState> = {
     },
     getArticleDetail(state) {
       return state.articleDetail
+    },
+    getUserInfo(state) {
+      return state.userInfo
+    },
+    getStatisticInfo(state) {
+      return state.statisticInfo
     }
   }
 }
